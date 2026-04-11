@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Error Explainer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">AI + Python + AWS</p>
+      <h1>AI Error Explainer</h1>
+      <p class="subtitle">
+        Paste a coding or cloud error and get a simple explanation, likely causes and practical fixes.
+      </p>
+    </section>
+
+    <section class="card input-card">
+      <label for="errorInput">Paste your error</label>
+      <textarea
+        id="errorInput"
+        placeholder="Example: NoSuchKey: index.html"
+      ></textarea>
+
+      <div class="actions">
+        <button id="explainBtn">Explain Error</button>
+        <button id="sampleBtn" class="secondary-btn" type="button">Try Sample Error</button>
+      </div>
+
+      <p id="statusMessage" class="status-message hidden"></p>
+      <p id="errorMessage" class="error-message hidden"></p>
+    </section>
+
+    <section id="result" class="result hidden">
+      <div class="result-card">
+        <div class="section-header">
+          <h2>Meaning</h2>
+        </div>
+        <p id="meaning"></p>
+      </div>
+
+      <div class="result-card">
+        <div class="section-header">
+          <h2>Likely Causes</h2>
+        </div>
+        <ul id="causes"></ul>
+      </div>
+
+      <div class="result-card">
+        <div class="section-header">
+          <h2>How to Fix</h2>
+        </div>
+        <ol id="fixes"></ol>
+      </div>
+
+      <div class="result-card">
+        <div class="section-header">
+          <h2>Confidence</h2>
+          <span id="confidenceBadge" class="badge">-</span>
+        </div>
+        <p id="confidenceText"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
