@@ -1,0 +1,3 @@
+# Esconder variáveis sensíveis
+.env
+backend/.env
