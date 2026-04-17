@@ -94,7 +94,7 @@ explainBtn.addEventListener("click", async () => {
   showElement(statusMessageEl);
 
   try {
-    const response = await fetch("http://127.0.0.1:5000/explain", {
+    const response = await fetch("https://2riw0jdjg3.execute-api.us-east-1.amazonaws.com/explain", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
