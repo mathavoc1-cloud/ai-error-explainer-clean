@@ -111,30 +111,34 @@ explainBtn.addEventListener("click", async () => {
     let explanation = "No explanation returned.";
 
     if (typeof data.body === "string") {
-      try {
-        const parsedBody = JSON.parse(data.body);
-        explanation = parsedBody.explanation || explanation;
-      } catch {
-        explanation = data.body;
+      const trimmed = data.body.trim();
+
+      if (trimmed.startsWith("{")) {
+        const parsedBody = JSON.parse(trimmed);
+        explanation = parsedBody.explanation || parsedBody.result || explanation;
+      } else {
+        explanation = trimmed;
       }
     } else if (typeof data.body === "object" && data.body !== null) {
-      explanation = data.body.explanation || explanation;
+      explanation = data.body.explanation || data.body.result || explanation;
     } else if (data.explanation) {
       explanation = data.explanation;
+    } else if (data.result) {
+      explanation = data.result;
     }
 
     meaningEl.textContent = explanation;
 
     renderList(causesEl, [
-      "Check the exact error message.",
-      "Review recent code changes.",
+      "Review the exact error message carefully.",
+      "Check recent code or configuration changes.",
       "Look at logs or stack trace for more context."
     ]);
 
     renderList(fixesEl, [
-      "Read the explanation above carefully.",
-      "Verify the related code or configuration.",
-      "Test again after applying the fix."
+      "Use the explanation above to identify the issue.",
+      "Review the related code, config, or dependency.",
+      "Apply the fix and test again."
     ]);
 
     updateConfidence("medium");
