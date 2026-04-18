@@ -104,20 +104,17 @@ explainBtn.addEventListener("click", async () => {
 
     const data = await response.json();
 
-const parsedBody = JSON.parse(data.body);
-
-const explanation = parsedBody.explanation;
-
-console.log(explanation);
-
     if (!response.ok) {
       throw new Error(data.details || data.error || "Something went wrong");
     }
 
-    meaningEl.textContent = data.meaning || "No explanation returned.";
-    renderList(causesEl, data.likely_causes || []);
-    renderList(fixesEl, data.how_to_fix || []);
-    updateConfidence(data.confidence);
+    const parsedBody = typeof data.body === "string" ? JSON.parse(data.body) : data.body;
+    const explanation = parsedBody.explanation || "No explanation returned.";
+
+    meaningEl.textContent = explanation;
+    renderList(causesEl, ["Check the exact error message.", "Review recent code changes.", "Look at logs or stack trace for more context."]);
+    renderList(fixesEl, ["Read the explanation above carefully.", "Verify the related code or config.", "Test again after applying the fix."]);
+    updateConfidence("medium");
 
     hideElement(statusMessageEl);
     showElement(resultSection);
