@@ -104,14 +104,9 @@ explainBtn.addEventListener("click", async () => {
 
     const data = await response.json();
 
-let explanation = "No explanation returned.";
+const parsedBody = JSON.parse(data.body);
 
-try {
-  const parsedBody = JSON.parse(data.body);
-  explanation = parsedBody.explanation || parsedBody.result || explanation;
-} catch (e) {
-  console.error("Erro ao parsear:", e);
-}
+const explanation = parsedBody.explanation;
 
 console.log(explanation);
 
