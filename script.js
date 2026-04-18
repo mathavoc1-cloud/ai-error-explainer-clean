@@ -55,7 +55,7 @@ function setLoadingState(isLoading) {
 }
 
 function updateConfidence(confidence) {
-  const value = (confidence || "low").toLowerCase();
+  const value = (confidence || "medium").toLowerCase();
   confidenceBadgeEl.textContent = value;
   confidenceBadgeEl.className = `badge ${value}`;
 
@@ -105,15 +105,38 @@ explainBtn.addEventListener("click", async () => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.details || data.error || "Something went wrong");
+      throw new Error(data.error || data.details || "Something went wrong");
     }
 
-    const parsedBody = typeof data.body === "string" ? JSON.parse(data.body) : data.body;
-    const explanation = parsedBody.explanation || "No explanation returned.";
+    let explanation = "No explanation returned.";
+
+    if (typeof data.body === "string") {
+      try {
+        const parsedBody = JSON.parse(data.body);
+        explanation = parsedBody.explanation || explanation;
+      } catch {
+        explanation = data.body;
+      }
+    } else if (typeof data.body === "object" && data.body !== null) {
+      explanation = data.body.explanation || explanation;
+    } else if (data.explanation) {
+      explanation = data.explanation;
+    }
 
     meaningEl.textContent = explanation;
-    renderList(causesEl, ["Check the exact error message.", "Review recent code changes.", "Look at logs or stack trace for more context."]);
-    renderList(fixesEl, ["Read the explanation above carefully.", "Verify the related code or config.", "Test again after applying the fix."]);
+
+    renderList(causesEl, [
+      "Check the exact error message.",
+      "Review recent code changes.",
+      "Look at logs or stack trace for more context."
+    ]);
+
+    renderList(fixesEl, [
+      "Read the explanation above carefully.",
+      "Verify the related code or configuration.",
+      "Test again after applying the fix."
+    ]);
+
     updateConfidence("medium");
 
     hideElement(statusMessageEl);
